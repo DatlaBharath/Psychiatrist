@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0px;
+        }
+        .input-block {
+            background-color: #1D5B79;
+            text-align: right;
+            margin: 0px;
+            color: white;
+            padding-top : 20px;
+            padding-bottom : 20px;
+            width: 100%;
+        }
+        .b {
+            width: 1200px;
+        }
+        .output-block {
+            background-color: #468B97;
+            text-align: left;
+            margin: 0px;
+            color: white;
+            padding-top : 20px;
+            padding-bottom : 20px;
+            width: 100%
+        }
+        form {
+                align-items: center;
+                margin-left: 120px;
+                background-color: #9BE8D8;
+                padding : 5px;
+                position: fixed;
+                margin-top: 600px;
+        }
+
+         label {
+                color: #1D5B79;
+                font-weight: bold;
+                margin-right: 10px;
+        }
+
+        input[type="text"] {
+                padding: 5px;
+                border-radius: 3px;
+                border: 3px solid #1D5B79;
+                width: 1000px;
+                margin : 5px;
+        }
+
+        button[type="submit"] {
+                background-color: #1D5B79;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 3px;
+                border: none;
+                cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+                background-color: #124059;
+        }
+        .a:hover {
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body style="margin: 0px;">
+    <form id="searchForm" method="POST" action="../cgi-bin/open.py">
+        <label for="a">Question:</label>
+        <input id="a" type="text" name="query">
+        <button type="submit">Enter</button>
+    </form>
+    <div id="b">
+        <!-- The server response will be inserted here -->
+    </div>
+    <br>
+    <br>
+    <br>
+    <script>
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var form = event.target;
+            var formData = new FormData(form);
+
+            fetch("../cgi-bin/open.py", {
+                method: "POST",
+                body: formData
+            })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(result) {
+                    var question = document.getElementById("a").value;
+                    var responseBlock = document.createElement("div");
+                    var questionHeading = document.createElement("h3");
+                    var responseHeading = document.createElement("h3");
+
+                    questionHeading.innerHTML = question;
+                    responseHeading.innerHTML = result;
+                    questionHeading.classList.add("input-block");
+                    responseHeading.classList.add("output-block");
+                    responseBlock.appendChild(questionHeading);
+                    responseBlock.appendChild(responseHeading);
+
+                    document.getElementById("b").appendChild(responseBlock);
+                })
+                .catch(function(error) {
+                    console.error("Error:", error);
+                });
+        });
+    </script>
+</body>
+</html>
