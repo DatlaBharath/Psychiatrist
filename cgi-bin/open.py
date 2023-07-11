@@ -4,7 +4,7 @@ print()
 import openai
 import subprocess
 import cgi
-openai.api_key = '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'
+openai.api_key = 'sk-HMyPphWFcT6BQKS8kSqAT3BlbkFJK3jXv4qS9ncsjcnN7kgnd'
 data = cgi.FieldStorage()
 query = data.getvalue("query")
 res = openai.Completion.create(
